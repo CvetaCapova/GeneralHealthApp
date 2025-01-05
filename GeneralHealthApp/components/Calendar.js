@@ -1,14 +1,14 @@
-// HomePage.js
 import React, { useState } from 'react';
-import { View, ScrollView, StyleSheet, Text, Button, Modal, TextInput, FlatList } from 'react-native';
+import { View, ScrollView, StyleSheet, Text, Modal, TextInput, FlatList, TouchableOpacity } from 'react-native';
 import { Card, Avatar, MD3Colors } from 'react-native-paper';
 import { Calendar as RNCalendar } from 'react-native-calendars';
 
 const CalendarFeature = () => {
     const [selectedDate, setSelectedDate] = useState('');
     const [appointments, setAppointments] = useState({
-        '2025-01-05': [{ title: 'Doctor Appointment', time: '10:00 AM', doctor: 'Dr. Smith', address: '123 Health St.' }],
-        '2025-01-07': [{ title: 'Therapy Session', time: '02:00 PM', doctor: 'Dr. Taylor', address: '456 Wellness Ave.' }],
+        '2025-01-05': [{ title: 'Doctor Appointment', time: '10:00 AM', doctor: 'Dr. Bayer', address: 'Karlsplatz 4, 1010 Wien' }],
+        '2025-01-07': [{ title: 'Therapy Session', time: '02:00 PM', doctor: 'Dr. Roch', address: 'Gusshausstrasse 1, 1040 Wien' }],
+        '2025-01-22': [{ title: 'Vaccination Appointment', time: '07:00 AM', doctor: 'Dr. Fritz', address: 'Favoritenstrasse 19, 1040 Wien' }],
     });
     const [symptomLogs, setSymptomLogs] = useState({});
     const [modalVisible, setModalVisible] = useState(false);
@@ -78,7 +78,12 @@ const CalendarFeature = () => {
                         <Text style={{ ...styles.entryText, marginBottom: 15 }}>Symptom Log: {symptomLogs[selectedDate]}</Text>
                     ) : <Text style={{ ...styles.entryText, marginBottom: 15 }}>No symptom log for this date.</Text>}
 
-                    <Button title="Add Symptom Log" onPress={() => setModalVisible(true)} color={MD3Colors.primary50} style={{ ...styles.roundedButton, marginBottom: 15 }} />
+                    <TouchableOpacity
+                        style={styles.roundedButtonPrimary}
+                        onPress={() => setModalVisible(true)}
+                    >
+                        <Text style={styles.buttonText}>Add Symptom Log</Text>
+                    </TouchableOpacity>
                 </Card.Content>
             </Card>
 
@@ -98,8 +103,18 @@ const CalendarFeature = () => {
                                 value={symptomEntry}
                                 onChangeText={setSymptomEntry}
                             />
-                            <Button title="Save" onPress={addSymptomLog} color={MD3Colors.primary50} style={{ ...styles.roundedButton, marginBottom: 20 }} />
-                            <Button title="Cancel" onPress={() => setModalVisible(false)} color={MD3Colors.secondary50} style={{ ...styles.roundedButton, marginBottom: 10 }} />
+                            <TouchableOpacity
+                                style={styles.roundedButtonPrimary}
+                                onPress={addSymptomLog}
+                            >
+                                <Text style={styles.buttonText}>Save</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={styles.roundedButtonSecondary}
+                                onPress={() => setModalVisible(false)}
+                            >
+                                <Text style={styles.buttonText}>Cancel</Text>
+                            </TouchableOpacity>
                         </Card.Content>
                     </Card>
                 </View>
@@ -164,9 +179,25 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         padding: 10,
     },
-    roundedButton: {
+    roundedButtonPrimary: {
+        backgroundColor: MD3Colors.primary50,
         borderRadius: 25,
-        marginVertical: 5,
+        paddingVertical: 10,
+        paddingHorizontal: 15,
+        marginBottom: 5,
+        alignItems: 'center',
+    },
+    roundedButtonSecondary: {
+        backgroundColor: MD3Colors.secondary50,
+        borderRadius: 25,
+        paddingVertical: 10,
+        paddingHorizontal: 15,
+        marginBottom: 15,
+        alignItems: 'center',
+    },
+    buttonText: {
+        color: '#ffffff',
+        fontWeight: 'bold',
     },
 });
 
