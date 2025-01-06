@@ -1,16 +1,21 @@
-// HomePage.js
 import React from 'react';
-import {View, StyleSheet, ScrollView, TextInput} from 'react-native';
-import {Card, Text, Button, Avatar, Icon, MD3Colors} from 'react-native-paper';
-
+import { View, StyleSheet, ScrollView, TextInput } from 'react-native';
+import { Card, Text, Button, Avatar, Icon, MD3Colors } from 'react-native-paper';
+import { useNavigation } from '@react-navigation/native';
 
 const HomePage = () => {
+    const navigation = useNavigation();
+
     const appointmentReminder = "Upcoming appointment with Dr. Smith on Jan 5, 2025, at 3:00 PM.";
     const medicationReminder = "Take 1 tablet of Aspirin at 8:00 AM.";
-    const aiInsight = "Based on your recent entries, it’s advisable to check your iron levels. Symptoms like fatigue, dizziness, and pale skin could indicate iron deficiency, which may affect your energy. A blood test is recommended."
+    const aiInsight = "Based on your recent entries, it’s advisable to check your iron levels. Symptoms like fatigue, dizziness, and pale skin could indicate iron deficiency, which may affect your energy. A blood test is recommended.";
     const [symptom, setSymptom] = React.useState('');
     const [severity, setSeverity] = React.useState('');
     const [notes, setNotes] = React.useState('');
+
+    const handleCardPress = () => {
+        navigation.navigate('AI Insights'); // Ensure 'AI Insights' matches the name in your navigation setup
+    };
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
@@ -33,7 +38,7 @@ const HomePage = () => {
                 />
             </Card>
             {/* AI-Generated Insight */}
-            <Card style={styles.card}>
+            <Card style={styles.card} onPress={handleCardPress}>
                 <Card.Content>
                     <Text style={styles.cardTitle}>AI Health Insight</Text>
                     <Text style={styles.cardText}>{aiInsight}</Text>
@@ -53,7 +58,7 @@ const HomePage = () => {
                         value={symptom}
                         onChangeText={setSymptom}
                         style={styles.input}
-                        mode = "outlined"
+                        mode="outlined"
                     />
                     <TextInput
                         label="Severity (1-10)"
@@ -76,7 +81,6 @@ const HomePage = () => {
                     </Button>
                 </Card.Content>
             </Card>
-
         </ScrollView>
     );
 };
@@ -111,17 +115,6 @@ const styles = StyleSheet.create({
     input: {
         marginBottom: 10,
     },
-    entry: {
-        marginBottom: 15,
-    },
-    entryText: {
-        fontSize: 14,
-        color: '#555',
-    },
-    bold: {
-        fontWeight: 'bold',
-    }
 });
-
 
 export default HomePage;
