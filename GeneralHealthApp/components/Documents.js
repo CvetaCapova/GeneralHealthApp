@@ -1,24 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { ScrollView, StyleSheet, Text, View, TouchableOpacity, TextInput} from 'react-native';
+import React, { useState } from 'react';
+import { ScrollView, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { Card, Button, Avatar, IconButton, MD3Colors } from 'react-native-paper';
 
 const Documents = () => {
-    const [searchQuery, setSearchQuery] = useState('');
     const [collapsedSections, setCollapsedSections] = useState({
         medications: false,
         vaccinations: false,
         testResults: false
     });
 
-    const handleViewDetails = (section) => {
-        alert(`You clicked on the ${section} section`);
-    };
-
-    const handleSearchChange = (query) => {
-        setSearchQuery(query);
-    };
-
-    // Simulating example documents for each section
+    // Example documents for each section
     const documents = {
         medications: [
             { id: 1, title: "Aspirin Prescription", preview: "Prescription for Aspirin, dosage 1 tablet at 8:00 AM.", file: "aspirin_prescription.pdf" },
@@ -34,21 +25,6 @@ const Documents = () => {
         ]
     };
 
-    const filteredDocuments = {
-        medications: documents.medications.filter(doc => doc.title.toLowerCase().includes(searchQuery.toLowerCase())),
-        vaccinations: documents.vaccinations.filter(doc => doc.title.toLowerCase().includes(searchQuery.toLowerCase())),
-        testResults: documents.testResults.filter(doc => doc.title.toLowerCase().includes(searchQuery.toLowerCase())),
-    };
-
-    // Automatically expand sections that have filtered documents
-    useEffect(() => {
-        setCollapsedSections({
-            medications: filteredDocuments.medications.length === 0 ? false : true,
-            vaccinations: filteredDocuments.vaccinations.length === 0 ? false : true,
-            testResults: filteredDocuments.testResults.length === 0 ? false : true,
-        });
-    }, [searchQuery]);
-
     const toggleSection = (section) => {
         setCollapsedSections((prev) => ({
             ...prev,
@@ -58,19 +34,6 @@ const Documents = () => {
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
-            <View style={styles.searchContainer}>
-                <TextInput
-                    label="Search Health Reports"
-                    value={searchQuery}
-                    onChangeText={handleSearchChange}
-                    style={styles.searchBar}
-                    mode="outlined"
-                    placeholder="Search..."
-                    placeholderTextColor={MD3Colors.secondary50}
-                    left={<IconButton icon="magnify" size={20} color={MD3Colors.primary30} />} // Add search icon
-                />
-            </View>
-
             {/* Medications Section */}
             <TouchableOpacity onPress={() => toggleSection('medications')}>
                 <Card style={styles.card}>
@@ -87,19 +50,17 @@ const Documents = () => {
                     />
                 </Card>
             </TouchableOpacity>
-            {collapsedSections.medications && filteredDocuments.medications.length > 0 && (
-                filteredDocuments.medications.map((doc) => (
-                    <Card key={doc.id} style={styles.card}>
-                        <Card.Title title={doc.title} />
-                        <Card.Content>
-                            <Text style={styles.cardText}>{doc.preview}</Text>
-                            <Button mode="outlined" onPress={() => alert(`Downloading ${doc.file}`)}>
-                                Download
-                            </Button>
-                        </Card.Content>
-                    </Card>
-                ))
-            )}
+            {collapsedSections.medications && documents.medications.map((doc) => (
+                <Card key={doc.id} style={styles.card}>
+                    <Card.Title title={doc.title} />
+                    <Card.Content>
+                        <Text style={styles.cardText}>{doc.preview}</Text>
+                        <Button mode="outlined" onPress={() => alert(`Downloading ${doc.file}`)}>
+                            Download
+                        </Button>
+                    </Card.Content>
+                </Card>
+            ))}
 
             {/* Vaccinations Section */}
             <TouchableOpacity onPress={() => toggleSection('vaccinations')}>
@@ -117,19 +78,17 @@ const Documents = () => {
                     />
                 </Card>
             </TouchableOpacity>
-            {collapsedSections.vaccinations && filteredDocuments.vaccinations.length > 0 && (
-                filteredDocuments.vaccinations.map((doc) => (
-                    <Card key={doc.id} style={styles.card}>
-                        <Card.Title title={doc.title} />
-                        <Card.Content>
-                            <Text style={styles.cardText}>{doc.preview}</Text>
-                            <Button mode="outlined" onPress={() => alert(`Downloading ${doc.file}`)}>
-                                Download
-                            </Button>
-                        </Card.Content>
-                    </Card>
-                ))
-            )}
+            {collapsedSections.vaccinations && documents.vaccinations.map((doc) => (
+                <Card key={doc.id} style={styles.card}>
+                    <Card.Title title={doc.title} />
+                    <Card.Content>
+                        <Text style={styles.cardText}>{doc.preview}</Text>
+                        <Button mode="outlined" onPress={() => alert(`Downloading ${doc.file}`)}>
+                            Download
+                        </Button>
+                    </Card.Content>
+                </Card>
+            ))}
 
             {/* Test Results Section */}
             <TouchableOpacity onPress={() => toggleSection('testResults')}>
@@ -147,19 +106,17 @@ const Documents = () => {
                     />
                 </Card>
             </TouchableOpacity>
-            {collapsedSections.testResults && filteredDocuments.testResults.length > 0 && (
-                filteredDocuments.testResults.map((doc) => (
-                    <Card key={doc.id} style={styles.card}>
-                        <Card.Title title={doc.title} />
-                        <Card.Content>
-                            <Text style={styles.cardText}>{doc.preview}</Text>
-                            <Button mode="outlined" onPress={() => alert(`Downloading ${doc.file}`)}>
-                                Download
-                            </Button>
-                        </Card.Content>
-                    </Card>
-                ))
-            )}
+            {collapsedSections.testResults && documents.testResults.map((doc) => (
+                <Card key={doc.id} style={styles.card}>
+                    <Card.Title title={doc.title} />
+                    <Card.Content>
+                        <Text style={styles.cardText}>{doc.preview}</Text>
+                        <Button mode="outlined" onPress={() => alert(`Downloading ${doc.file}`)}>
+                            Download
+                        </Button>
+                    </Card.Content>
+                </Card>
+            ))}
 
         </ScrollView>
     );
@@ -171,19 +128,6 @@ const styles = StyleSheet.create({
         padding: 20,
         backgroundColor: '#f8f9fa',
     },
-    searchContainer: {
-        marginBottom: 20,
-        paddingHorizontal: 10,
-    },
-    searchBar: {
-        backgroundColor: '#fff',
-        borderRadius: 30,  // Rounded corners
-        borderWidth: 1,
-        borderColor: '#E0E0E0', // Light gray border
-        height: 50,
-        paddingHorizontal: 15,
-        fontSize: 16,
-    },
     card: {
         marginBottom: 20,
         padding: 10,
@@ -193,13 +137,7 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.2,
         shadowRadius: 4,
-        elevation: 5, // For Android shadow
-    },
-    cardTitle: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        marginBottom: 10,
-        color: '#333',
+        elevation: 5,
     },
     cardText: {
         fontSize: 14,

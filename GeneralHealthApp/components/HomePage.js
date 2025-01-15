@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 const HomePage = () => {
     const navigation = useNavigation();
 
-    const appointmentReminder = "Upcoming appointment with Dr. Smith on Jan 5, 2025, at 3:00 PM.";
+    const appointmentReminder = "Upcoming appointment with Dr. Fritz on Jan 22 2025, at 7:00 AM.";
     const medicationReminder = "Take 1 tablet of Aspirin at 8:00 AM.";
     const aiInsight = "Based on your recent entries, it’s advisable to check your iron levels. Symptoms like fatigue, dizziness, and pale skin could indicate iron deficiency, which may affect your energy. A blood test is recommended.";
     const [symptom, setSymptom] = React.useState('');
